@@ -32,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
     // https://developer.android.com/reference/java/security/KeyStore.html
     private static final String KEYSTORE_TYPE = "BouncyCastle";
 
-    private static final char[] KEYSTORE_PASSWORD = "password".toCharArray();
-
     @Nullable
     private byte[] store;
 
@@ -57,6 +55,13 @@ public class MainActivity extends AppCompatActivity {
                 onRestore();
             }
         });
+
+        binding.clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.log.setText(null);
+            }
+        });
     }
 
     @NonNull
@@ -67,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         if (store == null) {
             keyStore.load(null);
         } else {
-            keyStore.load(new ByteArrayInputStream(store), KEYSTORE_PASSWORD);
+            keyStore.load(new ByteArrayInputStream(store), getPassword());
         }
         return keyStore;
     }
@@ -83,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         keyStore.setEntry(KEY_ALIAS, keyEntry, null);
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        keyStore.store(stream, KEYSTORE_PASSWORD);
+        keyStore.store(stream, getPassword());
         store = stream.toByteArray();
 
         logStore();
@@ -109,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void logStore() {
-        log("store contains: " + Base64.encodeToString(store, Base64.DEFAULT));
+        log("store contains: " + (store == null ? null : Base64.encodeToString(store, Base64.DEFAULT)));
     }
 
     private void log(@NonNull String message) {
@@ -142,5 +147,12 @@ public class MainActivity extends AppCompatActivity {
             log(e.getClass().getSimpleName() + ": " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    @NonNull
+    private char[] getPassword() {
+        return binding.password.getText()
+                .toString()
+                .toCharArray();
     }
 }

@@ -21,7 +21,21 @@
                 android:id="@+id/secret"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Secret"
+                android:hint="Secret to store"
+                tools:ignore="HardcodedText"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textVisiblePassword"
+                android:hint="Password to use"
                 tools:ignore="HardcodedText"/>
 
         </android.support.design.widget.TextInputLayout>
@@ -52,7 +66,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <TextView
                 android:id="@+id/log"
@@ -60,6 +75,15 @@
                 android:layout_height="wrap_content"/>
 
         </ScrollView>
+
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="Clear Log"
+            tools:ignore="HardcodedText"/>
 
     </LinearLayout>
 
