@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,76 +12,11 @@
         android:orientation="vertical"
         tools:context="com.github.yasevich.secrets.MainActivity">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/secret"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Secret to store"
-                tools:ignore="HardcodedText"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textVisiblePassword"
-                android:hint="Password to use"
-                tools:ignore="HardcodedText"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-        <LinearLayout
-            style="?android:attr/buttonBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end">
-
-            <Button
-                style="?android:attr/buttonBarButtonStyle"
-                android:id="@+id/store"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Store"
-                tools:ignore="HardcodedText"/>
-
-            <Button
-                style="?android:attr/buttonBarButtonStyle"
-                android:id="@+id/restore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Restore"
-                tools:ignore="HardcodedText"/>
-
-        </LinearLayout>
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/log"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        </ScrollView>
-
         <Button
-            style="?android:attr/buttonBarButtonStyle"
-            android:id="@+id/clear"
-            android:layout_width="wrap_content"
+            android:id="@+id/simple_store"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:text="Clear Log"
+            android:text="Simple Store"
             tools:ignore="HardcodedText"/>
 
     </LinearLayout>
