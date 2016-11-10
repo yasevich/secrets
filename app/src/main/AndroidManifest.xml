@@ -20,6 +20,8 @@
 
         <activity android:name=".SimpleStoreActivity"/>
 
+        <activity android:name=".CredentialsStoreActivity"/>
+
     </application>
 
 </manifest>

@@ -21,5 +21,12 @@ public final class MainActivity extends AppCompatActivity {
                 SimpleStoreActivity.start(view.getContext());
             }
         });
+
+        binding.credentialsStore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CredentialsStoreActivity.start(view.getContext());
+            }
+        });
     }
 }

@@ -19,6 +19,13 @@
             android:text="Simple Store"
             tools:ignore="HardcodedText"/>
 
+        <Button
+            android:id="@+id/credentials_store"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Credentials Store"
+            tools:ignore="HardcodedText"/>
+
     </LinearLayout>
 
 </layout>
