@@ -6,12 +6,12 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
 
 import com.github.yasevich.secrets.databinding.ActivitySimpleStoreBinding;
+import com.github.yasevich.secrets.databinding.ViewLogBinding;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -24,7 +24,7 @@ import java.security.cert.CertificateException;
 
 import javax.crypto.spec.SecretKeySpec;
 
-public final class SimpleStoreActivity extends AppCompatActivity {
+public final class SimpleStoreActivity extends StoreActivity {
 
     // Whether aliases are case sensitive is implementation dependent. In order to avoid problems, it is recommended not
     // to use aliases in a KeyStore that only differ in case. Source:
@@ -61,13 +61,12 @@ public final class SimpleStoreActivity extends AppCompatActivity {
                 onRestore();
             }
         });
+    }
 
-        binding.clear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                binding.log.setText(null);
-            }
-        });
+    @NonNull
+    @Override
+    protected ViewLogBinding getViewLogBinding() {
+        return binding.included;
     }
 
     @NonNull
@@ -121,14 +120,6 @@ public final class SimpleStoreActivity extends AppCompatActivity {
 
     private void logStore() {
         log("store contains: " + (store == null ? null : Base64.encodeToString(store, Base64.DEFAULT)));
-    }
-
-    private void log(@NonNull String message) {
-        StringBuilder builder = new StringBuilder(binding.log.getText());
-        if (builder.length() > 0) {
-            builder.append('\n');
-        }
-        binding.log.setText(builder.append(message).toString());
     }
 
     private void onStore() {
