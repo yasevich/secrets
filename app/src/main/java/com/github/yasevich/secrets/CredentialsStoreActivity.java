@@ -77,6 +77,18 @@ public final class CredentialsStoreActivity extends StoreActivity {
 
         keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
         if (keyguardManager.isKeyguardSecure()) {
+            binding.removeKey.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        getKeyStore().deleteEntry(KEY_ALIAS);
+                        log("key removed");
+                    } catch (Throwable e) {
+                        handleError(e);
+                    }
+                }
+            });
+
             binding.encrypt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -96,7 +108,7 @@ public final class CredentialsStoreActivity extends StoreActivity {
                 }
             });
         } else {
-            log("Secure lock screen hasn't set up.");
+            log("secure lock screen hasn't set up");
             disableViews(binding.secret, binding.encrypt, binding.decrypt);
         }
 

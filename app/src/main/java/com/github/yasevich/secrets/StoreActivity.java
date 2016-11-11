@@ -1,5 +1,6 @@
 package com.github.yasevich.secrets;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -34,6 +35,7 @@ public abstract class StoreActivity extends AppCompatActivity {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         binding = getViewLogBinding();
+        binding.log.setTypeface(Typeface.MONOSPACE);
         binding.clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
