@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.view.View;
 
 import com.github.yasevich.secrets.databinding.ActivitySimpleStoreBinding;
@@ -26,10 +25,6 @@ import javax.crypto.spec.SecretKeySpec;
 
 public final class SimpleStoreActivity extends StoreActivity {
 
-    // Whether aliases are case sensitive is implementation dependent. In order to avoid problems, it is recommended not
-    // to use aliases in a KeyStore that only differ in case. Source:
-    // https://developer.android.com/reference/java/security/KeyStore.html
-    private static final String KEY_ALIAS = "secret";
     // Android provides the following KeyStore types:
     // https://developer.android.com/reference/java/security/KeyStore.html
     private static final String KEYSTORE_TYPE = "BouncyCastle";
@@ -86,8 +81,8 @@ public final class SimpleStoreActivity extends StoreActivity {
             throws KeyStoreException, CertificateException, NoSuchAlgorithmException, IOException {
 
         log("storing secret: " + secret);
-        KeyStore.SecretKeyEntry keyEntry = new KeyStore.SecretKeyEntry(new SecretKeySpec(secret.getBytes(), "AES"));
-        log("key entry: " + keyEntry.toString());
+        KeyStore.SecretKeyEntry keyEntry = new KeyStore.SecretKeyEntry(new SecretKeySpec(secret.getBytes(), ALGORITHM));
+        log("key entry: " + keyEntry);
 
         KeyStore keyStore = getKeyStore();
         keyStore.setEntry(KEY_ALIAS, keyEntry, null);
@@ -112,14 +107,14 @@ public final class SimpleStoreActivity extends StoreActivity {
             return null;
         }
 
-        log("found entry: " + entry.toString());
+        log("found entry: " + entry);
         String secret = new String(entry.getSecretKey().getEncoded());
         log("restored secret: " + secret);
         return secret;
     }
 
     private void logStore() {
-        log("store contains: " + (store == null ? null : Base64.encodeToString(store, Base64.DEFAULT)));
+        log("store contains: " + toBase64(store));
     }
 
     private void onStore() {
@@ -132,8 +127,7 @@ public final class SimpleStoreActivity extends StoreActivity {
         try {
             storeSecret(secret);
         } catch (Throwable e) {
-            log(e.getClass().getSimpleName() + ": " + e.getMessage());
-            e.printStackTrace();
+            handleError(e);
         }
     }
 
@@ -141,8 +135,7 @@ public final class SimpleStoreActivity extends StoreActivity {
         try {
             binding.secret.setText(getSecret());
         } catch (Throwable e) {
-            log(e.getClass().getSimpleName() + ": " + e.getMessage());
-            e.printStackTrace();
+            handleError(e);
         }
     }
 

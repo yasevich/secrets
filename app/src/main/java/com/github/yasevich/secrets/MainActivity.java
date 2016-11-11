@@ -1,6 +1,7 @@
 package com.github.yasevich.secrets;
 
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -22,11 +23,15 @@ public final class MainActivity extends AppCompatActivity {
             }
         });
 
-        binding.credentialsStore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CredentialsStoreActivity.start(view.getContext());
-            }
-        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            binding.credentialsStore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    CredentialsStoreActivity.start(view.getContext());
+                }
+            });
+        } else {
+            binding.credentialsStore.setVisibility(View.GONE);
+        }
     }
 }
