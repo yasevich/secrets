@@ -22,6 +22,8 @@
 
         <activity android:name=".CredentialsStoreActivity"/>
 
+        <activity android:name=".FingerprintStoreActivity"/>
+
     </application>
 
 </manifest>

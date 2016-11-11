@@ -26,6 +26,13 @@
             android:text="Credentials Store"
             tools:ignore="HardcodedText"/>
 
+        <Button
+            android:id="@+id/fingerprint_store"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fingerprint Store"
+            tools:ignore="HardcodedText"/>
+
     </LinearLayout>
 
 </layout>

@@ -31,7 +31,18 @@ public final class MainActivity extends AppCompatActivity {
                 }
             });
         } else {
-            binding.credentialsStore.setVisibility(View.GONE);
+            binding.credentialsStore.setEnabled(false);
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            binding.fingerprintStore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    FingerprintStoreActivity.start(view.getContext());
+                }
+            });
+        } else {
+            binding.fingerprintStore.setEnabled(false);
         }
     }
 }
