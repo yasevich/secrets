@@ -8,9 +8,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.widget.EditText;
 
 import com.github.yasevich.secrets.databinding.ActivityFingerprintStoreBinding;
 import com.github.yasevich.secrets.databinding.ViewLogBinding;
+import com.github.yasevich.secrets.databinding.ViewStoreActionsBinding;
+import com.github.yasevich.secrets.store.Store;
 
 @TargetApi(Build.VERSION_CODES.M)
 public final class FingerprintStoreActivity extends StoreActivity {
@@ -29,7 +32,30 @@ public final class FingerprintStoreActivity extends StoreActivity {
 
     @NonNull
     @Override
-    protected ViewLogBinding getViewLogBinding() {
-        return binding.included;
+    protected Store getStore() {
+        throw new UnsupportedOperationException("not implemented yet");
+    }
+
+    @Override
+    protected boolean isStoreActionsEnabled() {
+        return false;
+    }
+
+    @NonNull
+    @Override
+    protected EditText getSecret() {
+        return binding.secret;
+    }
+
+    @NonNull
+    @Override
+    protected ViewStoreActionsBinding getStoreActionsBinding() {
+        return binding.storeActions;
+    }
+
+    @NonNull
+    @Override
+    protected ViewLogBinding getLogBinding() {
+        return binding.log;
     }
 }

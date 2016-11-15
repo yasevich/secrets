@@ -20,7 +20,7 @@
                 android:id="@+id/secret"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Secret to store"
+                android:hint="Secret"
                 tools:ignore="HardcodedText"/>
 
         </android.support.design.widget.TextInputLayout>
@@ -34,38 +34,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textVisiblePassword"
-                android:hint="Password to use"
+                android:hint="Password"
                 tools:ignore="HardcodedText"/>
 
         </android.support.design.widget.TextInputLayout>
 
-        <LinearLayout
-            style="?android:attr/buttonBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end">
-
-            <Button
-                style="?android:attr/buttonBarButtonStyle"
-                android:id="@+id/store"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Store"
-                tools:ignore="HardcodedText"/>
-
-            <Button
-                style="?android:attr/buttonBarButtonStyle"
-                android:id="@+id/restore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Restore"
-                tools:ignore="HardcodedText"/>
-
-        </LinearLayout>
+        <include
+            layout="@layout/view_store_actions"
+            android:id="@+id/store_actions"/>
 
         <include
             layout="@layout/view_log"
-            android:id="@+id/included"/>
+            android:id="@+id/log"/>
 
     </LinearLayout>
 
