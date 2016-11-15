@@ -42,7 +42,11 @@ public final class FingerprintStoreActivity extends StoreActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_fingerprint_store);
 
         fingerprintManager = FingerprintManagerCompat.from(this);
+    }
 
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
         authenticate();
     }
 
