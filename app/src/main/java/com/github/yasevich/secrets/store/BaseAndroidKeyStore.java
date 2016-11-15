@@ -1,6 +1,10 @@
 package com.github.yasevich.secrets.store;
 
+import android.os.Build;
+import android.security.keystore.KeyGenParameterSpec;
+import android.security.keystore.KeyProperties;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 
 import com.github.yasevich.secrets.algorithm.Algorithm;
 
@@ -28,14 +32,28 @@ abstract class BaseAndroidKeyStore extends BaseStore {
         return generator.generateKey();
     }
 
-    @NonNull
-    protected abstract AlgorithmParameterSpec createAlgorithmParameterSpec(
-            @NonNull String alias, @NonNull Algorithm algorithm);
-
+    @Override
     @NonNull
     protected final KeyStore getKeyStore() throws GeneralSecurityException, IOException {
         KeyStore keyStore = KeyStore.getInstance(KEYSTORE_TYPE);
         keyStore.load(null);
         return keyStore;
+    }
+
+    @NonNull
+    protected abstract AlgorithmParameterSpec createAlgorithmParameterSpec(
+            @NonNull String alias, @NonNull Algorithm algorithm);
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @SuppressWarnings("WrongConstant")
+    @NonNull
+    final AlgorithmParameterSpec createKeyGenParameterSpec(@NonNull String alias, @NonNull Algorithm algorithm) {
+        int purposes = KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT;
+        return new KeyGenParameterSpec.Builder(alias, purposes)
+                .setBlockModes(algorithm.getBlockMode())
+                .setEncryptionPaddings(algorithm.getEncryptionPadding())
+                .setUserAuthenticationRequired(true)
+                .setUserAuthenticationValidityDurationSeconds(30)
+                .build();
     }
 }

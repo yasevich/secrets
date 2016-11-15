@@ -18,6 +18,8 @@ import com.github.yasevich.secrets.databinding.ViewStoreActionsBinding;
 import com.github.yasevich.secrets.store.CredentialsStore;
 import com.github.yasevich.secrets.store.Store;
 
+import javax.crypto.Cipher;
+
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public final class CredentialsStoreActivity extends StoreActivity {
 
@@ -95,10 +97,16 @@ public final class CredentialsStoreActivity extends StoreActivity {
     protected void handleError(@NonNull Throwable e) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && e instanceof UserNotAuthenticatedException) {
             log("user authentication is required");
-            requestAuthentication(binding.storeActions.encrypt.getText());
+            requestAuthentication(getOperationName());
         } else {
             super.handleError(e);
         }
+    }
+
+    @NonNull
+    private CharSequence getOperationName() {
+        ViewStoreActionsBinding actions = binding.storeActions;
+        return (operationMode == Cipher.ENCRYPT_MODE ? actions.encrypt : actions.decrypt).getText();
     }
 
     private void requestAuthentication(@NonNull CharSequence operation) {
