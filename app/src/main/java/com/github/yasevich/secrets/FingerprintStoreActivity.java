@@ -13,10 +13,14 @@ import android.widget.EditText;
 import com.github.yasevich.secrets.databinding.ActivityFingerprintStoreBinding;
 import com.github.yasevich.secrets.databinding.ViewLogBinding;
 import com.github.yasevich.secrets.databinding.ViewStoreActionsBinding;
+import com.github.yasevich.secrets.store.FingerprintStore;
 import com.github.yasevich.secrets.store.Store;
 
 @TargetApi(Build.VERSION_CODES.M)
 public final class FingerprintStoreActivity extends StoreActivity {
+
+    @NonNull
+    private final Store store = new FingerprintStore();
 
     private ActivityFingerprintStoreBinding binding;
 
@@ -33,7 +37,7 @@ public final class FingerprintStoreActivity extends StoreActivity {
     @NonNull
     @Override
     protected Store getStore() {
-        throw new UnsupportedOperationException("not implemented yet");
+        return store;
     }
 
     @Override

@@ -10,12 +10,12 @@ import android.widget.EditText;
 import com.github.yasevich.secrets.databinding.ActivitySimpleStoreBinding;
 import com.github.yasevich.secrets.databinding.ViewLogBinding;
 import com.github.yasevich.secrets.databinding.ViewStoreActionsBinding;
-import com.github.yasevich.secrets.store.BouncyCastleStore;
+import com.github.yasevich.secrets.store.SimpleStore;
 
 public final class SimpleStoreActivity extends StoreActivity {
 
     @NonNull
-    private final BouncyCastleStore store = new BouncyCastleStore();
+    private final SimpleStore store = new SimpleStore();
 
     private ActivitySimpleStoreBinding binding;
 
@@ -31,7 +31,7 @@ public final class SimpleStoreActivity extends StoreActivity {
 
     @Override
     @NonNull
-    public BouncyCastleStore getStore() {
+    public SimpleStore getStore() {
         store.setPassword(getPassword());
         return store;
     }

@@ -15,7 +15,7 @@ import android.widget.EditText;
 import com.github.yasevich.secrets.databinding.ActivityCredentialsStoreBinding;
 import com.github.yasevich.secrets.databinding.ViewLogBinding;
 import com.github.yasevich.secrets.databinding.ViewStoreActionsBinding;
-import com.github.yasevich.secrets.store.AndroidKeyStore;
+import com.github.yasevich.secrets.store.CredentialsStore;
 import com.github.yasevich.secrets.store.Store;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -24,7 +24,7 @@ public final class CredentialsStoreActivity extends StoreActivity {
     private static final int REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS = 100;
 
     @NonNull
-    private final Store store = new AndroidKeyStore();
+    private final Store store = new CredentialsStore();
 
     private KeyguardManager keyguardManager;
 

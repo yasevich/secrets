@@ -9,8 +9,6 @@ import java.security.Key;
 
 public interface Store {
 
-    String ALGORITHM = "AES";
-
     @NonNull
     Key createKey(@NonNull String alias) throws GeneralSecurityException, IOException;
 

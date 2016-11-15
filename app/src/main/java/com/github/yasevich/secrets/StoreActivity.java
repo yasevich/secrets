@@ -1,9 +1,7 @@
 package com.github.yasevich.secrets;
 
-import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.security.keystore.KeyProperties;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +10,7 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 
+import com.github.yasevich.secrets.algorithm.Algorithm;
 import com.github.yasevich.secrets.databinding.ViewLogBinding;
 import com.github.yasevich.secrets.databinding.ViewStoreActionsBinding;
 import com.github.yasevich.secrets.store.Store;
@@ -24,11 +23,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.security.GeneralSecurityException;
 import java.security.Key;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
@@ -38,13 +35,6 @@ public abstract class StoreActivity extends AppCompatActivity {
     // to use aliases in a KeyStore that only differ in case. Source:
     // https://developer.android.com/reference/java/security/KeyStore.html
     protected static final String KEY_ALIAS = "secret";
-
-    protected static final String ALGORITHM = "AES";
-
-    @SuppressLint("InlinedApi")
-    private static final String BLOCK_MODE = KeyProperties.BLOCK_MODE_CBC;
-    @SuppressLint("InlinedApi")
-    private static final String ENCRYPTION_PADDING = KeyProperties.ENCRYPTION_PADDING_PKCS7;
 
     private static final String IV_FILE = "iv";
 
@@ -141,7 +131,7 @@ public abstract class StoreActivity extends AppCompatActivity {
         String original = secret.getText().toString();
 
         byte[] bytes;
-        Cipher cipher = getCipher();
+        Cipher cipher = Algorithm.Factory.getAlgorithm().getCipher();
 
         if (mode == Cipher.ENCRYPT_MODE) {
             bytes = original.getBytes();
@@ -205,11 +195,6 @@ public abstract class StoreActivity extends AppCompatActivity {
         for (View view : views) {
             view.setEnabled(false);
         }
-    }
-
-    @NonNull
-    private static Cipher getCipher() throws NoSuchPaddingException, NoSuchAlgorithmException {
-        return Cipher.getInstance(ALGORITHM + "/" + BLOCK_MODE + "/" + ENCRYPTION_PADDING);
     }
 
     private void saveIv(@NonNull byte[] iv) throws IOException {

@@ -3,6 +3,8 @@ package com.github.yasevich.secrets.store;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.github.yasevich.secrets.algorithm.Algorithm;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -13,7 +15,7 @@ import java.security.KeyStore;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
-public final class BouncyCastleStore extends BaseStore {
+public final class SimpleStore extends BaseStore {
 
     // Android provides the following KeyStore types:
     // https://developer.android.com/reference/java/security/KeyStore.html
@@ -27,7 +29,9 @@ public final class BouncyCastleStore extends BaseStore {
     @NonNull
     @Override
     public Key createKey(@NonNull String alias) throws GeneralSecurityException, IOException {
-        KeyGenerator generator = KeyGenerator.getInstance(ALGORITHM);
+        Algorithm algorithm = Algorithm.Factory.getAlgorithm();
+
+        KeyGenerator generator = KeyGenerator.getInstance(algorithm.getName());
         SecretKey secretKey = generator.generateKey();
 
         KeyStore keyStore = getKeyStore();
