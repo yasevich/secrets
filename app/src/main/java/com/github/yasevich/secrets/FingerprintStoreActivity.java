@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.widget.EditText;
 
+import com.github.yasevich.secrets.algorithm.OperationMode;
 import com.github.yasevich.secrets.databinding.ActivityFingerprintStoreBinding;
 import com.github.yasevich.secrets.databinding.ViewLogBinding;
 import com.github.yasevich.secrets.databinding.ViewStoreActionsBinding;

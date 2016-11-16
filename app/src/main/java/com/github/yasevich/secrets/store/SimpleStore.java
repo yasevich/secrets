@@ -3,17 +3,16 @@ package com.github.yasevich.secrets.store;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.github.yasevich.secrets.algorithm.AesAlgorithm;
 import com.github.yasevich.secrets.algorithm.Algorithm;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.security.Key;
 import java.security.KeyStore;
 
 import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 
 public final class SimpleStore extends BaseStore {
 
@@ -28,20 +27,20 @@ public final class SimpleStore extends BaseStore {
 
     @NonNull
     @Override
-    public Key createKey(@NonNull String alias) throws GeneralSecurityException, IOException {
-        Algorithm algorithm = Algorithm.Factory.getAlgorithm();
+    public KeyStore.Entry createEntry(@NonNull String alias) throws GeneralSecurityException, IOException {
+        Algorithm algorithm = AesAlgorithm.getInstance();
 
         KeyGenerator generator = KeyGenerator.getInstance(algorithm.getName());
-        SecretKey secretKey = generator.generateKey();
+        KeyStore.SecretKeyEntry entry = new KeyStore.SecretKeyEntry(generator.generateKey());
 
         KeyStore keyStore = getKeyStore();
-        keyStore.setEntry(alias, new KeyStore.SecretKeyEntry(secretKey), null);
+        keyStore.setEntry(alias, entry, null);
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         keyStore.store(stream, password);
         store = stream.toByteArray();
 
-        return secretKey;
+        return entry;
     }
 
     public void setPassword(@Nullable char[] password) {

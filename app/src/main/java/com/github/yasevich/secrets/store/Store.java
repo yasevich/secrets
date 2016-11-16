@@ -5,15 +5,15 @@ import android.support.annotation.Nullable;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.security.Key;
+import java.security.KeyStore;
 
 public interface Store {
 
     @NonNull
-    Key createKey(@NonNull String alias) throws GeneralSecurityException, IOException;
+    KeyStore.Entry createEntry(@NonNull String alias) throws GeneralSecurityException, IOException;
 
-    void removeKey(@NonNull String alias) throws GeneralSecurityException, IOException;
+    void removeEntry(@NonNull String alias) throws GeneralSecurityException, IOException;
 
     @Nullable
-    Key getKey(@NonNull String alias) throws GeneralSecurityException, IOException;
+    KeyStore.Entry getEntry(@NonNull String alias) throws GeneralSecurityException, IOException;
 }

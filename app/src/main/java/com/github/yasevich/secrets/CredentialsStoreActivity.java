@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.EditText;
 
+import com.github.yasevich.secrets.algorithm.OperationMode;
 import com.github.yasevich.secrets.databinding.ActivityCredentialsStoreBinding;
 import com.github.yasevich.secrets.databinding.ViewLogBinding;
 import com.github.yasevich.secrets.databinding.ViewStoreActionsBinding;
@@ -25,9 +26,7 @@ public final class CredentialsStoreActivity extends StoreActivity {
 
     private static final int REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS = 100;
 
-    @NonNull
-    private final Store store = new CredentialsStore();
-
+    private Store store;
     private KeyguardManager keyguardManager;
 
     private ActivityCredentialsStoreBinding binding;
@@ -42,8 +41,10 @@ public final class CredentialsStoreActivity extends StoreActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_credentials_store);
+
+        store = new CredentialsStore(this);
+        keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
     }
 
     @Override

@@ -10,8 +10,7 @@ import javax.crypto.NoSuchPaddingException;
 abstract class BaseAlgorithm implements Algorithm {
 
     @NonNull
-    @Override
-    public final Cipher getCipher() throws NoSuchPaddingException, NoSuchAlgorithmException {
+    final Cipher getCipher() throws NoSuchPaddingException, NoSuchAlgorithmException {
         return Cipher.getInstance(getName() + "/" + getBlockMode() + "/" + getEncryptionPadding());
     }
 }
