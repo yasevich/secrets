@@ -27,7 +27,7 @@ public interface Algorithm {
         }
 
         public static Algorithm getAlgorithm() {
-            return DefaultAlgorithm.getInstance();
+            return AesAlgorithm.getInstance();
         }
     }
 }
