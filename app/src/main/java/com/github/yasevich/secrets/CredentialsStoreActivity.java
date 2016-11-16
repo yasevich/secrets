@@ -111,7 +111,7 @@ public final class CredentialsStoreActivity extends StoreActivity {
     }
 
     private void requestAuthentication(@NonNull CharSequence operation) {
-        Intent intent = keyguardManager.createConfirmDeviceCredentialIntent("Confirm operation", operation);
+        Intent intent = keyguardManager.createConfirmDeviceCredentialIntent(operation, "Confirm operation");
         if (intent != null) {
             startActivityForResult(intent, REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS);
         } else {

@@ -17,9 +17,14 @@ abstract class BaseStore implements Store {
     @Nullable
     @Override
     public final KeyStore.Entry getEntry(@NonNull String alias) throws GeneralSecurityException, IOException {
-        return getKeyStore().getEntry(alias, null);
+        return getKeyStore().getEntry(alias, getProtectionParameter());
     }
 
     @NonNull
     protected abstract KeyStore getKeyStore() throws GeneralSecurityException, IOException;
+
+    @Nullable
+    protected KeyStore.ProtectionParameter getProtectionParameter() {
+        return null;
+    }
 }

@@ -33,6 +33,10 @@
             android:text="Fingerprint Store"
             tools:ignore="HardcodedText"/>
 
+        <include
+            layout="@layout/view_log"
+            android:id="@+id/log"/>
+
     </LinearLayout>
 
 </layout>

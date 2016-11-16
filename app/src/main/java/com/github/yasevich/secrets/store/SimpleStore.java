@@ -34,7 +34,7 @@ public final class SimpleStore extends BaseStore {
         KeyStore.SecretKeyEntry entry = new KeyStore.SecretKeyEntry(generator.generateKey());
 
         KeyStore keyStore = getKeyStore();
-        keyStore.setEntry(alias, entry, null);
+        keyStore.setEntry(alias, entry, getProtectionParameter());
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         keyStore.store(stream, password);
@@ -56,5 +56,11 @@ public final class SimpleStore extends BaseStore {
             keyStore.load(new ByteArrayInputStream(store), password);
         }
         return keyStore;
+    }
+
+    @Nullable
+    @Override
+    protected KeyStore.ProtectionParameter getProtectionParameter() {
+        return new KeyStore.PasswordProtection(password);
     }
 }
