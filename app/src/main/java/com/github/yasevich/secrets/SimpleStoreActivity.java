@@ -14,8 +14,7 @@ import com.github.yasevich.secrets.store.SimpleStore;
 
 public final class SimpleStoreActivity extends StoreActivity {
 
-    @NonNull
-    private final SimpleStore store = new SimpleStore();
+    private SimpleStore store;
 
     private ActivitySimpleStoreBinding binding;
 
@@ -27,6 +26,8 @@ public final class SimpleStoreActivity extends StoreActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_simple_store);
+
+        store = new SimpleStore(this);
     }
 
     @Override

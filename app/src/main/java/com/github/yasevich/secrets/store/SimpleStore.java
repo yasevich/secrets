@@ -1,14 +1,16 @@
 package com.github.yasevich.secrets.store;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.github.yasevich.secrets.algorithm.AesAlgorithm;
 import com.github.yasevich.secrets.algorithm.Algorithm;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 
@@ -20,10 +22,17 @@ public final class SimpleStore extends BaseStore {
     // https://developer.android.com/reference/java/security/KeyStore.html
     private static final String KEYSTORE_TYPE = "BouncyCastle";
 
-    @Nullable
-    private byte[] store;
+    private static final String KEYSTORE_FILE = "bc.keystore";
+
+    @NonNull
+    private final Context context;
+
     @Nullable
     private char[] password;
+
+    public SimpleStore(@NonNull Context context) {
+        this.context = context;
+    }
 
     @NonNull
     @Override
@@ -36,11 +45,17 @@ public final class SimpleStore extends BaseStore {
         KeyStore keyStore = getKeyStore();
         keyStore.setEntry(alias, entry, getProtectionParameter());
 
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        OutputStream stream = context.openFileOutput(KEYSTORE_FILE, Context.MODE_PRIVATE);
         keyStore.store(stream, password);
-        store = stream.toByteArray();
+        stream.close();
 
         return entry;
+    }
+
+    @Override
+    public void removeEntry(@NonNull String alias) throws GeneralSecurityException, IOException {
+        context.deleteFile(KEYSTORE_FILE);
+        getKeyStore().load(null);
     }
 
     public void setPassword(@Nullable char[] password) {
@@ -48,13 +63,20 @@ public final class SimpleStore extends BaseStore {
     }
 
     @NonNull
-    protected KeyStore getKeyStore() throws GeneralSecurityException, IOException {
+    protected KeyStore loadKeyStore() throws GeneralSecurityException, IOException {
         KeyStore keyStore = KeyStore.getInstance(KEYSTORE_TYPE);
-        if (store == null) {
-            keyStore.load(null);
-        } else {
-            keyStore.load(new ByteArrayInputStream(store), password);
+        InputStream inputStream = null;
+
+        try {
+            inputStream = openKeyStoreStream();
+            keyStore.load(inputStream, password);
+        } finally {
+            if (inputStream != null) {
+                //noinspection ThrowFromFinallyBlock
+                inputStream.close();
+            }
         }
+
         return keyStore;
     }
 
@@ -62,5 +84,14 @@ public final class SimpleStore extends BaseStore {
     @Override
     protected KeyStore.ProtectionParameter getProtectionParameter() {
         return new KeyStore.PasswordProtection(password);
+    }
+
+    @Nullable
+    private InputStream openKeyStoreStream() {
+        try {
+            return context.openFileInput(KEYSTORE_FILE);
+        } catch (FileNotFoundException e) {
+            return null;
+        }
     }
 }

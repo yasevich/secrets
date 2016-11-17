@@ -9,8 +9,11 @@ import java.security.KeyStore;
 
 abstract class BaseStore implements Store {
 
+    @Nullable
+    private KeyStore keyStore;
+
     @Override
-    public final void removeEntry(@NonNull String alias) throws GeneralSecurityException, IOException {
+    public void removeEntry(@NonNull String alias) throws GeneralSecurityException, IOException {
         getKeyStore().deleteEntry(alias);
     }
 
@@ -21,10 +24,18 @@ abstract class BaseStore implements Store {
     }
 
     @NonNull
-    protected abstract KeyStore getKeyStore() throws GeneralSecurityException, IOException;
+    protected abstract KeyStore loadKeyStore() throws GeneralSecurityException, IOException;
 
     @Nullable
     protected KeyStore.ProtectionParameter getProtectionParameter() {
         return null;
+    }
+
+    @NonNull
+    final KeyStore getKeyStore() throws GeneralSecurityException, IOException {
+        if (keyStore == null) {
+            keyStore = loadKeyStore();
+        }
+        return keyStore;
     }
 }

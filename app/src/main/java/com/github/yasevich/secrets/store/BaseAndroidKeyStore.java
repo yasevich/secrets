@@ -52,7 +52,7 @@ abstract class BaseAndroidKeyStore extends BaseStore {
 
     @Override
     @NonNull
-    protected final KeyStore getKeyStore() throws GeneralSecurityException, IOException {
+    protected final KeyStore loadKeyStore() throws GeneralSecurityException, IOException {
         KeyStore keyStore = KeyStore.getInstance(KEYSTORE_TYPE);
         keyStore.load(null);
         return keyStore;
