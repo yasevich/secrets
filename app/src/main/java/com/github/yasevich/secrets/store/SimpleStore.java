@@ -15,6 +15,7 @@ import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 
 import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 
 public final class SimpleStore extends BaseStore {
 
@@ -40,14 +41,23 @@ public final class SimpleStore extends BaseStore {
         Algorithm algorithm = AesAlgorithm.getInstance();
 
         KeyGenerator generator = KeyGenerator.getInstance(algorithm.getName());
-        KeyStore.SecretKeyEntry entry = new KeyStore.SecretKeyEntry(generator.generateKey());
+        SecretKey secretKey = generator.generateKey();
 
         KeyStore keyStore = getKeyStore();
+
+        KeyStore.SecretKeyEntry entry = new KeyStore.SecretKeyEntry(secretKey);
         keyStore.setEntry(alias, entry, getProtectionParameter());
 
-        OutputStream stream = context.openFileOutput(KEYSTORE_FILE, Context.MODE_PRIVATE);
-        keyStore.store(stream, password);
-        stream.close();
+        OutputStream stream = null;
+        try {
+            stream = context.openFileOutput(KEYSTORE_FILE, Context.MODE_PRIVATE);
+            keyStore.store(stream, password);
+        } finally {
+            if (stream != null) {
+                //noinspection ThrowFromFinallyBlock
+                stream.close();
+            }
+        }
 
         return entry;
     }
