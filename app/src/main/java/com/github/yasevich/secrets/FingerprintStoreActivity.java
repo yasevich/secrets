@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
+import android.support.v4.os.CancellationSignal;
 import android.widget.EditText;
 
 import com.github.yasevich.secrets.algorithm.OperationMode;
@@ -27,6 +28,7 @@ public final class FingerprintStoreActivity extends StoreActivity {
     private final Store store = new FingerprintStore();
 
     private FingerprintManagerCompat fingerprintManager;
+    private CancellationSignal cancellationSignal;
 
     private ActivityFingerprintStoreBinding binding;
 
@@ -46,9 +48,15 @@ public final class FingerprintStoreActivity extends StoreActivity {
     }
 
     @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        authenticate();
+    protected void onResume() {
+        super.onResume();
+        cancellationSignal = authenticate();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        cancellationSignal.cancel();
     }
 
     @NonNull
@@ -86,8 +94,16 @@ public final class FingerprintStoreActivity extends StoreActivity {
         operationMode = mode == Cipher.ENCRYPT_MODE ? Cipher.DECRYPT_MODE : Cipher.ENCRYPT_MODE;
     }
 
-    private void authenticate() {
-        fingerprintManager.authenticate(null, 0, null, new FingerprintManagerCompat.AuthenticationCallback() {
+    @NonNull
+    private CancellationSignal authenticate() {
+        CancellationSignal cancellationSignal = new CancellationSignal();
+        fingerprintManager.authenticate(null, 0, cancellationSignal, createAuthenticationCallback(), null);
+        return cancellationSignal;
+    }
+
+    @NonNull
+    private FingerprintManagerCompat.AuthenticationCallback createAuthenticationCallback() {
+        return new FingerprintManagerCompat.AuthenticationCallback() {
             @Override
             public void onAuthenticationFailed() {
                 log("authentication failed");
@@ -113,6 +129,6 @@ public final class FingerprintStoreActivity extends StoreActivity {
                 }
                 authenticate();
             }
-        }, null);
+        };
     }
 }
